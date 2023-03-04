@@ -15,6 +15,8 @@ export class WebSocketIoServer {
 
     private static instance: WebSocketIoServer
 
+    private roomNumber: number = 1
+
 
     private constructor(
         public serverOptions: ServerOptions
@@ -31,6 +33,27 @@ export class WebSocketIoServer {
         this.io.on('connection', (socket: Socket) => {
 
             this.socket = socket
+
+
+            this.socket.join(`tic-tac-room-${this.roomNumber}`)
+
+
+            const rooms = this.io.of('/').adapter.rooms
+
+
+            const roomsVisitorsAmount = rooms.get(`tic-tac-room-${this.roomNumber}`)?.size
+
+            if (roomsVisitorsAmount && (roomsVisitorsAmount > 1)) {
+
+                this.roomNumber += 1
+            }
+
+
+            this.io.to(`tic-tac-room-${this.roomNumber}`).emit('newIncomingMessage', {
+                message: 'hi, there',
+                author: socket.id
+            })
+
 
             this.setMessageHandler(socket)
 
