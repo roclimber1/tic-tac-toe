@@ -27,6 +27,7 @@ interface Options {
 export class WebSocketIoClient {
 
     public socket: Socket | null = null
+    private roomNumber: number = 1
 
     private static instance: WebSocketIoClient
 
@@ -48,8 +49,6 @@ export class WebSocketIoClient {
 
 
         this.socket.on('connect', () => {
-
-            console.debug('connected')
 
             this.setMessageHandler(callback)
         })
@@ -73,11 +72,22 @@ export class WebSocketIoClient {
 
             callback && callback(message)
         })
+
+
+        this.socket && this.socket.on('setRoomNumber', (room) => {
+
+            const { roomNumber } = room
+
+            this.roomNumber = roomNumber
+        })
     }
 
 
     public sendMessage(message: Message) {
 
-        this.socket && this.socket.emit('createdMessage', message)
+        this.socket && this.socket.emit('createdMessage', {
+            message,
+            roomNumber: this.roomNumber
+        })
     }
 }

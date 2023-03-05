@@ -40,19 +40,21 @@ export class WebSocketIoServer {
 
             const rooms = this.io.of('/').adapter.rooms
 
-
             const roomsVisitorsAmount = rooms.get(`tic-tac-room-${this.roomNumber}`)?.size
-
-            if (roomsVisitorsAmount && (roomsVisitorsAmount > 1)) {
-
-                this.roomNumber += 1
-            }
 
 
             this.io.to(`tic-tac-room-${this.roomNumber}`).emit('newIncomingMessage', {
                 message: 'hi, there',
                 author: socket.id
             })
+
+            this.io.to(`tic-tac-room-${this.roomNumber}`).emit('setRoomNumber', { roomNumber: this.roomNumber })
+
+
+            if (roomsVisitorsAmount && (roomsVisitorsAmount > 1)) {
+
+                this.roomNumber += 1
+            }
 
 
             this.setMessageHandler(socket)
@@ -75,9 +77,11 @@ export class WebSocketIoServer {
 
     public setMessageHandler(socket: Socket) {
 
-        socket.on('createdMessage', (message) => {
+        socket.on('createdMessage', (data) => {
 
-            socket.broadcast.emit('newIncomingMessage', message)
+            const { message, roomNumber } = data
+
+            this.io.to(`tic-tac-room-${roomNumber}`).emit('newIncomingMessage', message)
         })
     }
 }
