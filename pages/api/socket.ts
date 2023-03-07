@@ -1,5 +1,5 @@
 
-import { WebSocketIoServer } from '@/utils/server/webSocket'
+import { WebSocketIoServer } from '@/utils/server/WebSocketIoServer'
 
 
 import type { NextApiRequest, NextApiResponse } from 'next'

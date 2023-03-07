@@ -5,6 +5,7 @@
 import { io } from 'socket.io-client'
 
 import type { Socket } from 'socket.io-client'
+import type { GameRoomBase } from '@/utils/GameRoom'
 
 
 
@@ -27,7 +28,7 @@ interface Options {
 export class WebSocketIoClient {
 
     public socket: Socket | null = null
-    private roomNumber: number = 1
+    private roomConfig: GameRoomBase
 
     private static instance: WebSocketIoClient
 
@@ -68,26 +69,27 @@ export class WebSocketIoClient {
 
     public setMessageHandler(callback: OptionsCallback) {
 
-        this.socket && this.socket.on('newIncomingMessage', (message) => {
+        this.socket && this.socket.on('newIncomingMessage', (message: Message) => {
 
             callback && callback(message)
         })
 
 
-        this.socket && this.socket.on('setRoomNumber', (room) => {
+        this.socket && this.socket.on('setRoomsData', (room: GameRoomBase) => {
 
-            const { roomNumber } = room
-
-            this.roomNumber = roomNumber
+            this.roomConfig = room
         })
     }
 
 
     public sendMessage(message: Message) {
 
+        const { roomNumber } = this.roomConfig
+
+
         this.socket && this.socket.emit('createdMessage', {
             message,
-            roomNumber: this.roomNumber
+            roomNumber
         })
     }
 }
