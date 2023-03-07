@@ -4,7 +4,7 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react'
 
-import { WebSocketIoClient } from '@/utils/client/webSocketClient'
+import { WebSocketIoClient } from '@/utils/client/WebSocketIoClient'
 
 
 import styles from '@/app/page.module.css'
@@ -12,7 +12,7 @@ import styles from '@/app/page.module.css'
 
 
 
-import type { Message } from '@/utils/client/webSocketClient'
+import type { Message } from '@/utils/client/WebSocketIoClient'
 
 
 
