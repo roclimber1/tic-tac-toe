@@ -5,6 +5,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 
 import { WebSocketIoClient } from '@/utils/client/WebSocketIoClient'
+import GameBoard from '@/components/GameBoard'
 
 
 import styles from '@/app/page.module.css'
@@ -104,6 +105,11 @@ export default function Home() {
             >
                 Send the message 📬
             </button>
+
+
+            <GameBoard
+                available={true}
+            />
 
         </main>
     )
