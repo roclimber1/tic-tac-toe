@@ -89,7 +89,7 @@ export class WebSocketIoServer {
         const roomId = GameRoom.getRoomId(this.roomNumber)
         const room = this.rooms.get(roomId)
 
-        const roomData: GameRoomBase | null = room ? room?.getRoomData() : null
+        const roomData: GameRoomBase | null = room ? room?.getRoomData(this.socket?.id as string) : null
 
 
         roomData && this.io.to(roomId).emit('setRoomsData', roomData)

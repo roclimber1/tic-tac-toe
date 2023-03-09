@@ -26,6 +26,7 @@ export class Player implements PlayerBase {
 export interface GameRoomBase {
     firstPlayerIndex: number,
     id: string,
+    isFirstPlayer: boolean,
     players: Array<PlayerBase>,
     roomNumber: number
 }
@@ -39,6 +40,8 @@ class GameRoom implements GameRoomBase {
     public id: string = ''
 
     static roomPrefix: string = 'tic-tac-room-'
+
+    public isFirstPlayer: boolean = false
 
 
     public static getRoomId(roomNumber: number): string {
@@ -71,10 +74,14 @@ class GameRoom implements GameRoomBase {
     }
 
 
-    public getRoomData(): GameRoomBase {
+    public getRoomData(id: string): GameRoomBase {
+
+        this.isFirstPlayer = this.checkFirstPlayer(id)
+
 
         return {
             firstPlayerIndex: this.firstPlayerIndex,
+            isFirstPlayer: this.isFirstPlayer,
             id: this.id,
             players: this.players.map((item) => ({
                 id: item.id,
@@ -82,6 +89,23 @@ class GameRoom implements GameRoomBase {
             })),
             roomNumber: this.roomNumber
         }
+    }
+
+
+    public checkFirstPlayer(id: string) {
+
+        let result = false
+
+        try {
+
+            result = (this.players[this.firstPlayerIndex].id == id)
+
+        } catch (error) {
+
+            console.debug('ERROR', error)
+        }
+
+        return result
     }
 }
 
