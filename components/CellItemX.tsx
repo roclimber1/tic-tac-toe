@@ -1,5 +1,5 @@
 
-import { CellItemBase } from '@/components/CellItemBase'
+import CellItem, { CellItemBase } from '@/components/CellItemBase'
 
 
 
@@ -9,10 +9,14 @@ function CellItemX(props: CellItemBase) {
     const { active } = props
 
 
-    return <div className="w-4 h-4">
+    return <CellItem>
 
-        X
-    </div>
+        <div className="rounded-full w-7 h-7 bg-gradient-to-b from-orange-500 to-yellow-300">
+
+            X
+        </div>
+
+    </CellItem>
 }
 
 

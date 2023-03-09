@@ -28,7 +28,7 @@ interface Options {
 export class WebSocketIoClient {
 
     public socket: Socket | null = null
-    private roomConfig: GameRoomBase
+    public roomConfig: GameRoomBase
 
     private static instance: WebSocketIoClient
 

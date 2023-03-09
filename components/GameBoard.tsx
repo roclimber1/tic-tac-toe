@@ -22,9 +22,9 @@ export class GameBoardBase {
 
     private init(available: boolean) {
 
-        for (let column = 1; column < GameBoardBase.COLUMNS_AMOUNT; column++) {
+        for (let column = 0; column < GameBoardBase.COLUMNS_AMOUNT; column++) {
 
-            for (let row = 1; row < GameBoardBase.ROWS_AMOUNT; row++) {
+            for (let row = 0; row < GameBoardBase.ROWS_AMOUNT; row++) {
 
                 const newCell = new GameCellItem(
                     column, row, available
@@ -45,14 +45,15 @@ export class GameBoardBase {
 
 
 interface GameBoardProps {
-    available: boolean
+    available: boolean,
+    isFirstPlayer: boolean
 }
 
 
 
 function GameBoard(props: GameBoardProps) {
 
-    const { available } = props
+    const { available, isFirstPlayer } = props
 
 
     const gameBoardInstance: GameBoardBase = useMemo(() => new GameBoardBase(available), [])
@@ -60,7 +61,7 @@ function GameBoard(props: GameBoardProps) {
 
     const handleCellClick = (cell: GameCellItem) => (): CellType => {
 
-        return cell.type
+        return isFirstPlayer ? CellType.x : CellType.o
     }
 
 
@@ -71,7 +72,7 @@ function GameBoard(props: GameBoardProps) {
     }, [available])
 
 
-    return <div>
+    return <div className="flex flex-row flex-wrap" style={{ width: '408px' }}>
 
         {gameBoardInstance.cells.map((cell: GameCellItem, index) => {
 
